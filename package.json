@@ -1,0 +1,25 @@
+{
+  "name": "link-shortner",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "start:prod": "turbo start:prod",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "devDependencies": {
+    "bulma": "^1.0.3",
+    "prettier": "^3.4.2",
+    "sass": "^1.83.4",
+    "turbo": "^2.4.0",
+    "typescript": "5.7.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "npm@10.9.2",
+  "workspaces": [
+    "apps/*"
+  ]
+}
