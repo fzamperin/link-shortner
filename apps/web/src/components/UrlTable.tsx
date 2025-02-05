@@ -8,6 +8,7 @@ interface UrlTableProps {
 }
 
 export const UrlTable = ({ urls }: UrlTableProps) => {
+  const [showCopiedFeedback, setShowCopiedFeedback] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [newSlug, setNewSlug] = useState('');
   const [error, setError] = useState('');
@@ -33,6 +34,12 @@ export const UrlTable = ({ urls }: UrlTableProps) => {
 
   return (
     <div className="table-container">
+      {showCopiedFeedback && (
+    <div className="notification is-info is-light has-text-weight-medium px-3 py-2" 
+         style={{ position: 'fixed', top: '1rem', right: '1rem', zIndex: 100 }}>
+      ✅ Copied to clipboard!
+    </div>
+  )}
       {error && <div className="notification is-danger">{error}</div>}
       
       <table className="table is-fullwidth is-striped is-hoverable">
@@ -70,30 +77,55 @@ export const UrlTable = ({ urls }: UrlTableProps) => {
                     </div>
                   </div>
                 ) : (
-                  `${process.env.REACT_APP_API_URL}/${url.slug}`
+                  <div className="is-flex is-align-items-center has-gap-1">
+                    <span className="is-clipped has-text-weight-semibold">
+                      {process.env.REACT_APP_API_URL}/{url.slug}
+                    </span>
+                    <button
+                      style={{ marginLeft: '10px' }}
+                      className="button is-small is-info is-light"
+                      title="Copy to clipboard"
+                      aria-label="Copy short URL"
+                      onClick={() => {
+                        navigator.clipboard.writeText(`${process.env.REACT_APP_API_URL}/${url.slug}`);
+                        setShowCopiedFeedback(true);
+                        setTimeout(() => setShowCopiedFeedback(false), 4000);
+                      }}
+                    >
+                      <span className="icon">
+                        <i className="far fa-copy" />
+                      </span>
+                    </button>
+                  </div>
                 )}
               </td>
               <td>{new Date(url.createdAt).toLocaleString()}</td>
               <td>
                 {editingId === url.id ? (
                   <button 
-                    className="button is-small is-text"
+                    className="button is-small is-text has-text-danger"
                     onClick={() => {
                       setEditingId(null);
                       setNewSlug('');
                     }}
                   >
-                    Cancel
+                    <span className="icon">
+                      <i className="fas fa-times" />
+                    </span>
+                    <span>Cancel</span>
                   </button>
                 ) : (
                   <button
-                    className="button is-small"
+                    className="button is-small is-primary is-light"
                     onClick={() => {
                       setEditingId(url.id);
                       setNewSlug(url.slug);
                     }}
                   >
-                    Edit
+                    <span className="icon">
+                      <i className="fas fa-pencil-alt" />
+                    </span>
+                    <span>Edit</span>
                   </button>
                 )}
               </td>
