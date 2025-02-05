@@ -1,4 +1,4 @@
-import { useState, FormEvent, useEffect } from 'react';
+import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { loginUser } from '../services/api';
@@ -12,7 +12,7 @@ export const LoginForm = () => {
     general: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { login, token } = useAuth();
+  const { login,} = useAuth();
   const navigate = useNavigate();
 
   const validateForm = () => {
